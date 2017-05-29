@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 import com.sysdata.widget.accordionview.utils.ThemeUtils;
 
 /**
- * ImageView showing an up/down arrow. It can be used with AccordionView in order to animate the
+ * ImageView showing an up/down arrow. It can be used with FancyAccordionView in order to animate the
  * expand/collapse action of each item view.
  *
  * Simply add this view to your item layouts, it will be automagically detected and animated.

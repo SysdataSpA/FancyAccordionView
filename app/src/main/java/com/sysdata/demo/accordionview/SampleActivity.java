@@ -24,7 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.sysdata.widget.accordionview.AccordionView;
+import com.sysdata.widget.accordionview.FancyAccordionView;
 import com.sysdata.widget.accordionview.ExpandableItemHolder;
 import com.sysdata.widget.accordionview.Item;
 import com.sysdata.widget.accordionview.ItemAdapter;
@@ -38,7 +38,7 @@ public class SampleActivity extends AppCompatActivity {
     private static final String KEY_EXPANDED_ID = "expandedId";
 
     private Toast mToast;
-    private AccordionView mRecyclerView;
+    private FancyAccordionView mRecyclerView;
     private ItemAdapter.OnItemClickedListener mListener = new ItemAdapter.OnItemClickedListener() {
         @Override
         public void onItemClicked(ItemAdapter.ItemViewHolder<?> viewHolder, int id) {
@@ -74,7 +74,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        mRecyclerView = (AccordionView) findViewById(R.id.alarms_recycler_view);
+        mRecyclerView = (FancyAccordionView) findViewById(R.id.alarms_recycler_view);
 
         // bind the factory to create view holder for item collapsed
         mRecyclerView.setCollapsedViewHolderFactory(SampleCollapsedViewHolder.Factory.create(R.layout.sample_layout_collapsed), mListener);

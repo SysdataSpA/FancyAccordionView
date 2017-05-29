@@ -29,8 +29,8 @@ public class ExpandableItemHolder<T extends Item> extends ItemAdapter.ItemHolder
 
     @Override
     public int getItemViewType() {
-        return isExpanded() ? AccordionView.getExpandedViewHolderFactory().getItemViewLayoutId()
-                : AccordionView.getCollapsedViewHolderFactory().getItemViewLayoutId();
+        return isExpanded() ? FancyAccordionView.getExpandedViewHolderFactory().getItemViewLayoutId()
+                : FancyAccordionView.getCollapsedViewHolderFactory().getItemViewLayoutId();
     }
 
     public void expand() {

@@ -31,7 +31,7 @@ import java.util.List;
  * Wrapper around RecyclerView to prevent simultaneous layout passes,
  * particularly during animations and present data by UI accordion pattern rules.
  */
-public class AccordionView extends RecyclerView {
+public class FancyAccordionView extends RecyclerView {
 
     private long mScrollToItemId = Item.INVALID_ID;
     private long mExpandedItemId = Item.INVALID_ID;
@@ -44,15 +44,15 @@ public class AccordionView extends RecyclerView {
 
     private ItemAdapter<ExpandableItemHolder> mItemAdapter;
 
-    public AccordionView(Context context) {
+    public FancyAccordionView(Context context) {
         this(context, null);
     }
 
-    public AccordionView(Context context, @Nullable AttributeSet attrs) {
+    public FancyAccordionView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AccordionView(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public FancyAccordionView(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {

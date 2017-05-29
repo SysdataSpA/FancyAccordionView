@@ -23,7 +23,7 @@
     android:background="#E6BDBDBD"
     tools:context="com.sysdata.demo.accordionview.SampleActivity">
 
-    <com.sysdata.widget.accordionview.AccordionView
+    <com.sysdata.widget.accordionview.FancyAccordionView
         android:id="@+id/alarms_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
