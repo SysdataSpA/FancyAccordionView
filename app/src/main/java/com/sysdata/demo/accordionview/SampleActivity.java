@@ -24,10 +24,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.sysdata.widget.accordionview.FancyAccordionView;
-import com.sysdata.widget.accordionview.ExpandableItemHolder;
-import com.sysdata.widget.accordionview.Item;
-import com.sysdata.widget.accordionview.ItemAdapter;
+import com.sysdata.widget.accordion.FancyAccordionView;
+import com.sysdata.widget.accordion.ExpandableItemHolder;
+import com.sysdata.widget.accordion.Item;
+import com.sysdata.widget.accordion.ItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

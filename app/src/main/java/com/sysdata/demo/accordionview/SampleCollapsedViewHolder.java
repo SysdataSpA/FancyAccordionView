@@ -22,9 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.sysdata.widget.accordionview.CollapsedViewHolder;
-import com.sysdata.widget.accordionview.ExpandableItemHolder;
-import com.sysdata.widget.accordionview.ItemAdapter;
+import com.sysdata.widget.accordion.CollapsedViewHolder;
+import com.sysdata.widget.accordion.ExpandableItemHolder;
+import com.sysdata.widget.accordion.ItemAdapter;
 
 public final class SampleCollapsedViewHolder extends CollapsedViewHolder {
 

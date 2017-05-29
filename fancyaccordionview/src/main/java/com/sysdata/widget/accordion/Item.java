@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sysdata.widget.accordionview;
+package com.sysdata.widget.accordion;
 
 public abstract class Item {
 

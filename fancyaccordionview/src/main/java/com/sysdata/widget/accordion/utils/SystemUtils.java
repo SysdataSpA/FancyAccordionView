@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sysdata.widget.accordionview.utils;
+package com.sysdata.widget.accordion.utils;
 
 import android.content.Context;
 import android.os.Build;

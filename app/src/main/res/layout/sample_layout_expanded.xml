@@ -45,7 +45,7 @@
         android:paddingBottom="8dp"
         tools:text="I'm an Expanded View"/>
 
-    <com.sysdata.widget.accordionview.ArrowImageView
+    <com.sysdata.widget.accordion.ArrowImageView
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"

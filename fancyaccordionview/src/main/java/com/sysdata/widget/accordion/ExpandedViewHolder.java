@@ -14,37 +14,50 @@
  * limitations under the License.
  */
 
-package com.sysdata.widget.accordionview;
+package com.sysdata.widget.accordion;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sysdata.widget.accordionview.utils.AnimatorUtils;
-import com.sysdata.widget.accordionview.utils.SystemUtils;
+import com.sysdata.widget.accordion.utils.AnimatorUtils;
+import com.sysdata.widget.accordion.utils.SystemUtils;
+import com.sysdata.widget.accordion.utils.ThemeUtils;
 
 import java.util.List;
 
-/**
- * A ViewHolder containing views for an item in collapsed stated.
- */
-public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
+import static android.view.View.TRANSLATION_Y;
 
-    protected CollapsedViewHolder(View itemView) {
+/**
+ * A ViewHolder containing views for an item in expanded state.
+ */
+public abstract class ExpandedViewHolder extends ArrowItemViewHolder {
+
+    protected ExpandedViewHolder(View itemView) {
         super(itemView);
 
-        // Expand handler
+        final Context context = itemView.getContext();
+        itemView.setBackground(new LayerDrawable(new Drawable[]{
+                ContextCompat.getDrawable(context, R.drawable.alarm_background_expanded),
+                ThemeUtils.resolveDrawable(context, R.attr.selectableItemBackground)
+        }));
+
+        // Collapse handler
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getItemHolder().expand();
-                notifyItemClicked(ItemAdapter.OnItemClickedListener.ACTION_ID_COLLAPSED_VIEW);
+                getItemHolder().collapse();
+                notifyItemClicked(ItemAdapter.OnItemClickedListener.ACTION_ID_EXPANDED_VIEW);
             }
         });
 
@@ -52,14 +65,14 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
             arrow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getItemHolder().expand();
-                    notifyItemClicked(ItemAdapter.OnItemClickedListener.ACTION_ID_COLLAPSED_VIEW);
+                    getItemHolder().collapse();
+                    notifyItemClicked(ItemAdapter.OnItemClickedListener.ACTION_ID_EXPANDED_VIEW);
                 }
             });
 
             // Override arrow drawable if running Lollipop
             if (SystemUtils.isLMR1OrLater()) {
-                arrow.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_caret_down_animation));
+                arrow.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.ic_caret_up_animation));
             }
         }
 
@@ -69,8 +82,38 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
     @Override
     public Animator onAnimateChange(List<Object> payloads, int fromLeft, int fromTop, int fromRight,
                                     int fromBottom, long duration) {
-        /* There are no possible partial animations for collapsed view holders. */
-        return null;
+        if (payloads == null || payloads.isEmpty()) {
+            return null;
+        }
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+        if (arrow != null) {
+            animatorSet.playTogether(AnimatorUtils.getBoundsAnimator(itemView,
+                    fromLeft, fromTop, fromRight, fromBottom,
+                    itemView.getLeft(), itemView.getTop(), itemView.getRight(), itemView.getBottom()),
+                    ObjectAnimator.ofFloat(arrow, TRANSLATION_Y, 0f));
+        } else {
+            animatorSet.playTogether(AnimatorUtils.getBoundsAnimator(itemView,
+                    fromLeft, fromTop, fromRight, fromBottom,
+                    itemView.getLeft(), itemView.getTop(), itemView.getRight(), itemView.getBottom()));
+        }
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                setTranslationY(0f);
+                itemView.requestLayout();
+            }
+        });
+        animatorSet.setDuration(duration);
+        animatorSet.setInterpolator(AnimatorUtils.INTERPOLATOR_FAST_OUT_SLOW_IN);
+
+        return animatorSet;
+    }
+
+    private void setTranslationY(float translationY) {
+        if (arrow != null) {
+            arrow.setTranslationY(translationY);
+        }
     }
 
     @Override
@@ -81,15 +124,17 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
             return null;
         }
 
-        final boolean isCollapsing = this == newHolder;
-        setChangingViewsAlpha(isCollapsing ? 0f : 1f);
+        final boolean isExpanding = this == newHolder;
+        AnimatorUtils.setBackgroundAlpha(itemView, isExpanding ? 0 : 255);
+        setChangingViewsAlpha(isExpanding ? 0f : 1f);
 
-        final Animator changeAnimatorSet = isCollapsing
-                ? createCollapsingAnimator((ArrowItemViewHolder) oldHolder, duration)
-                : createExpandingAnimator((ArrowItemViewHolder) newHolder, duration);
+        final Animator changeAnimatorSet = isExpanding
+                ? createExpandingAnimator((ArrowItemViewHolder) oldHolder, duration)
+                : createCollapsingAnimator((ArrowItemViewHolder) newHolder, duration);
         changeAnimatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animator) {
+                AnimatorUtils.setBackgroundAlpha(itemView, 255);
                 if (arrow != null) {
                     arrow.setVisibility(View.VISIBLE);
                     arrow.setTranslationY(0f);
@@ -101,28 +146,37 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
         return changeAnimatorSet;
     }
 
-    private Animator createExpandingAnimator(ArrowItemViewHolder newHolder, long duration) {
+    private Animator createCollapsingAnimator(ArrowItemViewHolder newHolder, long duration) {
         if (arrow != null) {
             arrow.setVisibility(View.INVISIBLE);
         }
 
         final View oldView = itemView;
         final View newView = newHolder.itemView;
-        final Animator boundsAnimator = AnimatorUtils.getBoundsAnimator(oldView, oldView, newView)
-                .setDuration(duration);
+
+        final Animator backgroundAnimator = ObjectAnimator.ofPropertyValuesHolder(oldView,
+                PropertyValuesHolder.ofInt(AnimatorUtils.BACKGROUND_ALPHA, 255, 0));
+        backgroundAnimator.setDuration(duration);
+
+        final Animator boundsAnimator = AnimatorUtils.getBoundsAnimator(oldView, oldView, newView);
+        boundsAnimator.setDuration(duration);
         boundsAnimator.setInterpolator(AnimatorUtils.INTERPOLATOR_FAST_OUT_SLOW_IN);
 
         final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(boundsAnimator);
+        animatorSet.playTogether(backgroundAnimator, boundsAnimator);
         return animatorSet;
     }
 
-    private Animator createCollapsingAnimator(ArrowItemViewHolder oldHolder, long duration) {
+    private Animator createExpandingAnimator(ArrowItemViewHolder oldHolder, long duration) {
         final View oldView = oldHolder.itemView;
         final View newView = itemView;
-        final Animator boundsAnimator = AnimatorUtils.getBoundsAnimator(newView, oldView, newView)
-                .setDuration(duration);
+        final Animator boundsAnimator = AnimatorUtils.getBoundsAnimator(newView, oldView, newView);
+        boundsAnimator.setDuration(duration);
         boundsAnimator.setInterpolator(AnimatorUtils.INTERPOLATOR_FAST_OUT_SLOW_IN);
+
+        final Animator backgroundAnimator = ObjectAnimator.ofPropertyValuesHolder(newView,
+                PropertyValuesHolder.ofInt(AnimatorUtils.BACKGROUND_ALPHA, 0, 255));
+        backgroundAnimator.setDuration(duration);
 
         final AnimatorSet animatorSet;
         if (arrow != null) {
@@ -132,6 +186,7 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
             ((ViewGroup) newView).offsetDescendantRectToMyCoords(arrow, newArrowRect);
             ((ViewGroup) oldView).offsetDescendantRectToMyCoords(oldArrow, oldArrowRect);
             final float arrowTranslationY = oldArrowRect.bottom - newArrowRect.bottom;
+
             arrow.setTranslationY(arrowTranslationY);
             arrow.setVisibility(View.VISIBLE);
 
@@ -140,7 +195,7 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
             arrowAnimation.setInterpolator(AnimatorUtils.INTERPOLATOR_FAST_OUT_SLOW_IN);
 
             animatorSet = new AnimatorSet();
-            animatorSet.playTogether(boundsAnimator, arrowAnimation);
+            animatorSet.playTogether(backgroundAnimator, boundsAnimator, arrowAnimation);
             animatorSet.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animator) {
@@ -149,7 +204,7 @@ public abstract class CollapsedViewHolder extends ArrowItemViewHolder {
             });
         } else {
             animatorSet = new AnimatorSet();
-            animatorSet.playTogether(boundsAnimator);
+            animatorSet.playTogether(backgroundAnimator, boundsAnimator);
         }
 
         return animatorSet;

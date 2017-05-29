@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sysdata.widget.accordionview;
+package com.sysdata.widget.accordion;
 
 import android.content.Context;
 import android.os.SystemClock;
@@ -65,7 +65,7 @@ public class FancyAccordionView extends RecyclerView {
 
         setLayoutManager(new AccordionLinearLayoutManager(context));
 
-        ItemAnimator itemAnimator = new com.sysdata.widget.accordionview.ItemAnimator();
+        ItemAnimator itemAnimator = new com.sysdata.widget.accordion.ItemAnimator();
         itemAnimator.setChangeDuration(300L);
         itemAnimator.setMoveDuration(300L);
         setItemAnimator(itemAnimator);

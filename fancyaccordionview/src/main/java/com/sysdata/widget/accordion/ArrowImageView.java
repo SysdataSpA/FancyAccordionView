@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.sysdata.widget.accordionview;
+package com.sysdata.widget.accordion;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
-import com.sysdata.widget.accordionview.utils.ThemeUtils;
+import com.sysdata.widget.accordion.utils.ThemeUtils;
 
 /**
  * ImageView showing an up/down arrow. It can be used with FancyAccordionView in order to animate the

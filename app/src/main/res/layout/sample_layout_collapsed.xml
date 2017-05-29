@@ -34,7 +34,7 @@
         android:textColor="@android:color/black"
         tools:text="Collapsed View"/>
 
-    <com.sysdata.widget.accordionview.ArrowImageView
+    <com.sysdata.widget.accordion.ArrowImageView
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"

@@ -16,7 +16,7 @@
 
 package com.sysdata.demo.accordionview;
 
-import com.sysdata.widget.accordionview.Item;
+import com.sysdata.widget.accordion.Item;
 
 /**
  * Created on 05/04/17.

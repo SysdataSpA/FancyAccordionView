@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sysdata.widget.accordionview;
+package com.sysdata.widget.accordion;
 
 import android.view.View;
 import android.widget.ImageView;
