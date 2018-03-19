@@ -22,14 +22,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp">
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp">
 
     <TextView
         android:id="@+id/sample_layout_collapsed_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:textColor="@android:color/black"
         tools:text="Collapsed View"/>

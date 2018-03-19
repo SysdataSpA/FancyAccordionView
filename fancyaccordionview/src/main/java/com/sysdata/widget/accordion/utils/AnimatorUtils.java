@@ -23,6 +23,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.Property;
 import android.view.View;
@@ -43,7 +44,7 @@ public class AnimatorUtils {
                             && ((LayerDrawable) background).getNumberOfLayers() > 0) {
                         background = ((LayerDrawable) background).getDrawable(0);
                     }
-                    return background.getAlpha();
+                    return DrawableCompat.getAlpha(background);
                 }
 
                 @Override
