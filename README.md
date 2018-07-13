@@ -23,7 +23,7 @@ To use the FancyAccordionView in your project follow this steps.
 ```
 2. in your **App level `build.gradle`** add this dependecy
 ```gradle
-    implementation 'it.sysdata.mobile:sddialogview:1.0.0'
+    implementation 'it.sysdata.mobile:fancyaccordionview:1.0.0'
 ```
 
 ### 3.2 Add FancyAccordionView to your layout 
