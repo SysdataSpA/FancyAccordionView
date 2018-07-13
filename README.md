@@ -17,9 +17,14 @@ FancyAccordionView is a custom view that can be used for showing a list of items
 To use the FancyAccordionView in your project follow this steps.
 
 ### 3.1 Add the library as a dependency
-1. download the library project (library + demo)
-2. open your project in Android Studio
-3. follow the istructions [Add your library as a dependency](https://developer.android.com/studio/projects/android-library.html#AddDependency)
+1. in **Project level `build.gradle`** add this repository
+```gradle
+   maven { url  'https://dl.bintray.com/sysdata/maven' }
+```
+2. in your **App level `build.gradle`** add this dependecy
+```gradle
+    implementation 'it.sysdata.mobile:sddialogview:1.0.0'
+```
 
 ### 3.2 Add FancyAccordionView to your layout 
 Open your layout file and add the FancyAccordionView:
