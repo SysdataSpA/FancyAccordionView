@@ -16,6 +16,23 @@
 
 apply plugin: 'com.android.library'
 
+buildscript {
+    dependencies {
+        repositories {
+            // serve per org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1
+            maven {
+                url "https://plugins.gradle.org/m2/"
+            }
+        }
+        // artifactory
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1'
+        // bintray
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -46,3 +63,28 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 }
+
+// pubblicazione maven
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+ext {
+    // GROUP_ID
+    publishedGroupId = 'it.sysdata.mobile'
+    // ARTIFACT_ID
+    artifact = 'fancyaccordionview'
+    // VERSION_ID
+    libraryVersion = '1.0.0'
+
+    developerId = 'sysdata-mobile'
+    developerName = ''
+    developerEmail = 'team.mobile@sysdata.it'
+
+    bintrayRepo = 'maven'
+    bintrayName = 'fancyaccordionview'
+    libraryName = 'fancyaccordionview'
+    bintrayOrganization = 'sysdata'
+}
+
+//apply from: 'publishArtifactory.gradle'
+apply from: 'publishBintray.gradle'
+
