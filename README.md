@@ -4,7 +4,7 @@ An Android fancy accordion view,
 ## 1. Demo
 To run the example demo, clone the repo, import the project in Android Studio and run the app.
 
-![demo](FancyAccordionView_demo.gif)
+![demo](FancyAccordionView_demo_viewType.gif)
 
 ## 2. What is FancyAccordionView?
 FancyAccordionView is a custom view that can be used for showing a list of items. It extends RecyclerView and offers the following features:
@@ -184,10 +184,6 @@ It is also possible to define different view types.
                 mListener,
                 VIEW_TYPE_2
         );
-
-the result will be like this
-
-![demo](FancyAccordionView_demo_viewType.gif)
 
 # Licence
 
