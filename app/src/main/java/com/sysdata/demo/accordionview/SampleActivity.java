@@ -37,6 +37,9 @@ public class SampleActivity extends AppCompatActivity {
 
     private static final String KEY_EXPANDED_ID = "expandedId";
 
+    public static final int VIEW_TYPE_1 = 1;
+    public static final int VIEW_TYPE_2 = 2;
+
     private Toast mToast;
     private FancyAccordionView mRecyclerView;
     private ItemAdapter.OnItemClickedListener mListener = new ItemAdapter.OnItemClickedListener() {
@@ -76,11 +79,31 @@ public class SampleActivity extends AppCompatActivity {
 
         mRecyclerView = (FancyAccordionView) findViewById(R.id.alarms_recycler_view);
 
-        // bind the factory to create view holder for item collapsed
-        mRecyclerView.setCollapsedViewHolderFactory(SampleCollapsedViewHolder.Factory.create(R.layout.sample_layout_collapsed), mListener);
+        // bind the factory to create view holder for item collapsed of type 1
+        mRecyclerView.setCollapsedViewHolderFactory(
+                SampleCollapsedViewHolder.Factory.create(R.layout.sample_layout_collapsed),
+                mListener,
+                VIEW_TYPE_1
+        );
+        // bind the factory to create view holder for item collapsed of type 2
+        mRecyclerView.setCollapsedViewHolderFactory(
+                SampleCollapsedViewHolder.Factory.create(R.layout.sample_layout_collapsed_type2),
+                mListener,
+                VIEW_TYPE_2
+        );
 
-        // bind the factory to create view holder for item expanded
-        mRecyclerView.setExpandedViewHolderFactory(SampleExpandedViewHolder.Factory.create(R.layout.sample_layout_expanded), mListener);
+        // bind the factory to create view holder for item expanded of type 1
+        mRecyclerView.setExpandedViewHolderFactory(
+                SampleExpandedViewHolder.Factory.create(R.layout.sample_layout_expanded),
+                mListener,
+                VIEW_TYPE_1
+        );
+        // bind the factory to create view holder for item expanded of type 2
+        mRecyclerView.setExpandedViewHolderFactory(
+                SampleExpandedViewHolder.Factory.create(R.layout.sample_layout_expanded_type2),
+                mListener,
+                VIEW_TYPE_2
+        );
 
         // restore the expanded item from state
         if (savedInstanceState != null) {
@@ -105,20 +128,40 @@ public class SampleActivity extends AppCompatActivity {
         Item itemModel;
         ExpandableItemHolder itemHolder;
         for (; index < dataCount; index++) {
+            int viewType = VIEW_TYPE_1;
+            if(!isOdd(index)){
+                viewType = VIEW_TYPE_2;
+            }
             itemModel = SampleItem.create(getItemTitle(index), getItemDescription(index));
-            itemHolder = new ExpandableItemHolder(itemModel);
+            itemHolder = new ExpandableItemHolder(itemModel, viewType);
             itemHolders.add(itemHolder);
         }
 
         mRecyclerView.setAdapterItems(itemHolders);
     }
 
+    private boolean isOdd(int index) {
+        return (index % 2) == 0;
+    }
+
     private String getItemTitle(int position) {
-        return String.format(Locale.ITALY, "Item %d", position + 1);
+        String title = String.format(Locale.ITALY, "Item %d", position + 1);
+        if(!isOdd(position)){
+            title += " (Type 2)";
+        } else {
+            title += " (Type 1)";
+        }
+        return title;
     }
 
     private String getItemDescription(int position) {
-        return String.format(Locale.ITALY, "Hello World, I'm an expandable item!", position);
+        String description = "Hello World, I'm an expandable item";
+        if(!isOdd(position)){
+            description += " of type 2!";
+        } else {
+            description += " of type 1!";
+        }
+        return description;
     }
 
     private void showToast(String text) {

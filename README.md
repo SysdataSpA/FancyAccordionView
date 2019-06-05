@@ -12,6 +12,7 @@ FancyAccordionView is a custom view that can be used for showing a list of items
 * allows custom layout for extended/collapsed item
 * callback for extended/collapsed item click
 * scroll up the clicked item
+* multiple layout for extended/collapsed item
 
 ## 3. How to use it?
 To use the FancyAccordionView in your project follow this steps.
@@ -21,9 +22,9 @@ To use the FancyAccordionView in your project follow this steps.
 ```gradle
    maven { url  'https://dl.bintray.com/sysdata/maven' }
 ```
-2. in your **App level `build.gradle`** add this dependecy
+2. in your **App level `build.gradle`** add this dependency
 ```gradle
-    implementation 'it.sysdata.mobile:fancyaccordionview:1.0.0'
+    implementation 'it.sysdata.mobile:fancyaccordionview:1.0.1'
 ```
 
 ### 3.2 Add FancyAccordionView to your layout 
@@ -155,6 +156,38 @@ Get the reference to FancyAccordionView, set the layout for collapsed/expanded i
 
     // populate RecyclerView with mock data
     loadData();
+
+It is also possible to define different view types.
+
+        // bind the factory to create view holder for item collapsed of type 1
+        mRecyclerView.setCollapsedViewHolderFactory(
+                SampleCollapsedViewHolder.Factory.create(R.layout.sample_layout_collapsed),
+                mListener,
+                VIEW_TYPE_1
+        );
+        // bind the factory to create view holder for item collapsed of type 2
+        mRecyclerView.setCollapsedViewHolderFactory(
+                SampleCollapsedViewHolder.Factory.create(R.layout.sample_layout_collapsed_type2),
+                mListener,
+                VIEW_TYPE_2
+        );
+
+        // bind the factory to create view holder for item expanded of type 1
+        mRecyclerView.setExpandedViewHolderFactory(
+                SampleExpandedViewHolder.Factory.create(R.layout.sample_layout_expanded),
+                mListener,
+                VIEW_TYPE_1
+        );
+        // bind the factory to create view holder for item expanded of type 2
+        mRecyclerView.setExpandedViewHolderFactory(
+                SampleExpandedViewHolder.Factory.create(R.layout.sample_layout_expanded_type2),
+                mListener,
+                VIEW_TYPE_2
+        );
+
+the result will be like this
+
+![demo](FancyAccordionView_demo_viewType.gif)
 
 # Licence
 

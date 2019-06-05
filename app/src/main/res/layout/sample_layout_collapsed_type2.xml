@@ -15,25 +15,30 @@
   ~ limitations under the License.
   -->
 
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#E6BDBDBD"
-    tools:context="com.sysdata.demo.accordionview.SampleActivity">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp">
 
-    <com.sysdata.widget.accordion.FancyAccordionView
-        android:id="@+id/alarms_recycler_view"
+    <TextView
+        android:id="@+id/sample_layout_collapsed_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:descendantFocusability="beforeDescendants"
-        android:fadingEdgeLength="0dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        android:background="#ddddff"
-        android:splitMotionEvents="false"
-        tools:listitem="@layout/sample_layout_collapsed"/>
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/black"
+        tools:text="Collapsed View Type 2"/>
 
-</FrameLayout>
+    <com.sysdata.widget.accordion.ArrowImageView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:tint="@android:color/holo_red_dark"
+        app:expanded="false"/>
+
+</RelativeLayout>
