@@ -23,6 +23,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 
 import java.util.List;
@@ -39,8 +40,8 @@ public class FancyAccordionView extends RecyclerView {
     private boolean mIgnoreRequestLayout;
     private long mCurrentUpdateToken;
 
-    private static ItemAdapter.ItemViewHolder.Factory sCollapsedViewHolderFactory;
-    private static ItemAdapter.ItemViewHolder.Factory sExpandedViewHolderFactory;
+    private static SparseArray<ItemAdapter.ItemViewHolder.Factory> sCollapsedViewHolderFactories = new SparseArray<>();
+    private static SparseArray<ItemAdapter.ItemViewHolder.Factory> sExpandedViewHolderFactories = new SparseArray<>();
 
     private ItemAdapter<ExpandableItemHolder> mItemAdapter;
 
@@ -173,7 +174,19 @@ public class FancyAccordionView extends RecyclerView {
      * @param listener the {@link ItemAdapter.OnItemClickedListener}
      */
     public void setCollapsedViewHolderFactory(ItemAdapter.ItemViewHolder.Factory factory, ItemAdapter.OnItemClickedListener listener) {
-        sCollapsedViewHolderFactory = factory;
+        setCollapsedViewHolderFactory(factory, listener, 0);
+    }
+
+    /**
+     * Sets the {@link ItemAdapter.ItemViewHolder.Factory} and {@link ItemAdapter.OnItemClickedListener}
+     * used to create new item view holders of the given view type for collapsed state.
+     *
+     * @param factory  the {@link ItemAdapter.ItemViewHolder.Factory} used to create new item view holders
+     * @param listener the {@link ItemAdapter.OnItemClickedListener}
+     * @param viewType the view type used to identify the factory to use
+     */
+    public void setCollapsedViewHolderFactory(ItemAdapter.ItemViewHolder.Factory factory, ItemAdapter.OnItemClickedListener listener, int viewType) {
+        sCollapsedViewHolderFactories.append(viewType, factory);
         mItemAdapter.withViewTypes(factory, listener, factory.getItemViewLayoutId());
     }
 
@@ -185,7 +198,19 @@ public class FancyAccordionView extends RecyclerView {
      * @param listener the {@link ItemAdapter.OnItemClickedListener}
      */
     public void setExpandedViewHolderFactory(ItemAdapter.ItemViewHolder.Factory factory, ItemAdapter.OnItemClickedListener listener) {
-        sExpandedViewHolderFactory = factory;
+        setExpandedViewHolderFactory(factory, listener, 0);
+    }
+
+    /**
+     * Sets the {@link ItemAdapter.ItemViewHolder.Factory} and {@link ItemAdapter.OnItemClickedListener}
+     * used to create new item view holders of the given view type for expanded state.
+     *
+     * @param factory  the {@link ItemAdapter.ItemViewHolder.Factory} used to create new item view holders
+     * @param listener the {@link ItemAdapter.OnItemClickedListener}
+     * @param viewType the view type used to identify the factory to use
+     */
+    public void setExpandedViewHolderFactory(ItemAdapter.ItemViewHolder.Factory factory, ItemAdapter.OnItemClickedListener listener, int viewType) {
+        sExpandedViewHolderFactories.append(viewType, factory);
         mItemAdapter.withViewTypes(factory, listener, factory.getItemViewLayoutId());
     }
 
@@ -276,13 +301,27 @@ public class FancyAccordionView extends RecyclerView {
      * @return the {@link ItemAdapter.ItemViewHolder.Factory} used to create new item view holders for collapsed state.
      */
     static ItemAdapter.ItemViewHolder.Factory getCollapsedViewHolderFactory() {
-        return sCollapsedViewHolderFactory;
+        return getCollapsedViewHolderFactory(0);
+    }
+
+    /**
+     * @return the {@link ItemAdapter.ItemViewHolder.Factory} used to create new item view holders for collapsed state for the given viewType.
+     */
+    static ItemAdapter.ItemViewHolder.Factory getCollapsedViewHolderFactory(int viewType) {
+        return sCollapsedViewHolderFactories.get(viewType);
     }
 
     /**
      * @return the {@link ItemAdapter.ItemViewHolder.Factory} used to create new item view holders for expanded state.
      */
     static ItemAdapter.ItemViewHolder.Factory getExpandedViewHolderFactory() {
-        return sExpandedViewHolderFactory;
+        return getExpandedViewHolderFactory(0);
+    }
+
+    /**
+     * @return the {@link ItemAdapter.ItemViewHolder.Factory} used to create new item view holders for expanded state for the given viewType.
+     */
+    static ItemAdapter.ItemViewHolder.Factory getExpandedViewHolderFactory(int viewType) {
+        return sExpandedViewHolderFactories.get(viewType);
     }
 }

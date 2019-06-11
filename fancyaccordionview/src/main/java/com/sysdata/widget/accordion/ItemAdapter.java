@@ -312,6 +312,11 @@ public class ItemAdapter<T extends ItemAdapter.ItemHolder>
         public final long itemId;
 
         /**
+         * the item view type
+         */
+        public final int viewType;
+
+        /**
          * Listeners to be invoked by {@link #notifyItemChanged()}.
          */
         private final List<OnItemChangedListener> mOnItemChangedListeners = new ArrayList<>();
@@ -323,8 +328,20 @@ public class ItemAdapter<T extends ItemAdapter.ItemHolder>
          * @param itemId the globally unique id corresponding to the item
          */
         public ItemHolder(T item, long itemId) {
+            this(item, itemId, 0);
+        }
+
+        /**
+         * Optional constructor used to set a custom view type to the item, by default is 0.
+         *
+         * @param item   the {@link T} item to be held by this holder
+         * @param itemId the globally unique id corresponding to the item
+         * @param viewType the item custom view type
+         */
+        public ItemHolder(T item, long itemId, int viewType){
             this.item = item;
             this.itemId = itemId;
+            this.viewType = viewType;
         }
 
         /**

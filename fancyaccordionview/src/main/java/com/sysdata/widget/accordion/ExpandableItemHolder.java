@@ -24,13 +24,17 @@ public class ExpandableItemHolder<T extends Item> extends ItemAdapter.ItemHolder
     private boolean mExpanded;
 
     public ExpandableItemHolder(T item) {
-        super(item, item.getUniqueId());
+        this(item, 0);
+    }
+
+    public ExpandableItemHolder(T item, int viewType) {
+        super(item, item.getUniqueId(), viewType);
     }
 
     @Override
     public int getItemViewType() {
-        return isExpanded() ? FancyAccordionView.getExpandedViewHolderFactory().getItemViewLayoutId()
-                : FancyAccordionView.getCollapsedViewHolderFactory().getItemViewLayoutId();
+        return isExpanded() ? FancyAccordionView.getExpandedViewHolderFactory(viewType).getItemViewLayoutId()
+                : FancyAccordionView.getCollapsedViewHolderFactory(viewType).getItemViewLayoutId();
     }
 
     public void expand() {

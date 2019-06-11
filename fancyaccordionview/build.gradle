@@ -73,7 +73,7 @@ ext {
     // ARTIFACT_ID
     artifact = 'fancyaccordionview'
     // VERSION_ID
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'sysdata-mobile'
     developerName = ''
