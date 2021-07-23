@@ -20,11 +20,11 @@ To use the FancyAccordionView in your project follow this steps.
 ### 3.1 Add the library as a dependency
 1. in **Project level `build.gradle`** add this repository
 ```gradle
-   maven { url  'https://dl.bintray.com/sysdata/maven' }
+   maven { url "https://jitpack.io" }
 ```
 2. in your **App level `build.gradle`** add this dependency
 ```gradle
-    implementation 'it.sysdata.mobile:fancyaccordionview:1.0.1'
+    implementation 'com.github.SysdataSpA:FancyAccordionView:1.0.0'
 ```
 
 ### 3.2 Add FancyAccordionView to your layout 
